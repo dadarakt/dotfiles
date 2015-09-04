@@ -10,6 +10,7 @@
 
 #sudo shutdown -r 0
 
+
 git clone https://github.com/dadarakt/dotfiles.git ~/dotfiles
 cp ~/dotfiles/{.vimrc, .profile, .zshrc} ~/
 
