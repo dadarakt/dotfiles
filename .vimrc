@@ -1,5 +1,6 @@
 " Description: Lots of stuff from the interwebs to make vim better
 " Author: dadarakt
+
 " OS level information {{{
 filetype plugin indent on 
 let s:OS = 'linux'
@@ -48,6 +49,29 @@ set autoindent
 " Buffers & windows {{{
 " reuse window when changing buffers without saving 
 set hidden
+
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+
+" " Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+ "This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
 " }}}
 " Search {{{
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
@@ -144,6 +168,9 @@ set termencoding=utf-8
 " remap leader key for easier access
 let mapleader = ','
 
+" Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy, which is the default
+map Y y$
+
 " Map <C-L> (redraw screen) to also turn off search highlighting until the next search
 nnoremap <C-L> :nohl<CR><C-L>
 
@@ -199,6 +226,7 @@ Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'bling/vim-airline'
 call vundle#end() " required
 " For remaining manual package management
 execute pathogen#infect()
