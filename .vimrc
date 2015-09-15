@@ -2,7 +2,7 @@
 " Author: dadarakt
 
 " OS level information {{{
-filetype plugin indent on 
+filetype plugin indent on
 let s:OS = 'linux'
 let os = substitute(system('uname'), '\n', '', '')
 if os ==   'Darwin' || os == 'Mac'
@@ -14,13 +14,13 @@ let s:plugins = isdirectory(expand('~/.vim/bundle/vundle', 1))
 " Some more folders needed
 if !isdirectory(expand('~/.vim/backup/', 1))
     silent call mkdir(expand('~/.vim/backup', 1), 'p')
-endif 
+endif
 if !isdirectory(expand('~/.vim/undo/', 1))
     silent call mkdir(expand('~/.vim/undo', 1), 'p')
-endif 
+endif
 if !isdirectory(expand('~/.vim/swap/', 1))
     silent call mkdir(expand('~/.vim/swap', 1), 'p')
-endif 
+endif
 "}}}
 " General settings {{{
 " sensible standards
@@ -47,7 +47,7 @@ set joinspaces
 set autoindent
 " }}}
 " Buffers & windows {{{
-" reuse window when changing buffers without saving 
+" reuse window when changing buffers without saving
 set hidden
 
 " Enable the list of buffers
@@ -55,6 +55,8 @@ let g:airline#extensions#tabline#enabled = 1
 
 " " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+let g:airline_powerline_fonts = 1
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
@@ -139,8 +141,8 @@ if has('persistent_undo')
     set undofile
     set undolevels=1000
     set undoreload=10000
-endif 
- 
+endif
+
 " Use backups
 " Source: http://stackoverflow.com/a/15317146
 set backup
