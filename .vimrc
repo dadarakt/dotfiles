@@ -228,8 +228,6 @@ Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 call vundle#end() " required
-" For remaining manual package management
-execute pathogen#infect()
 "}}}
 " Colors {{{
 let g:color_schemes = ['badwold', 'vim-colorschemes']
@@ -242,9 +240,9 @@ endif
 " set background=dark
 " let g:solarized_termcolors = 256
 " colorscheme solarized
-set t_Co=256
-set background=dark
-colorscheme solarized
+"set t_Co=256
+"set background=dark
+"colorscheme solarized
 " }}}
 
 " Fold down this file
