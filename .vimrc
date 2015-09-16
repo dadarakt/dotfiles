@@ -45,6 +45,17 @@ set smarttab
 set joinspaces
 
 set autoindent
+
+" When indenting lines visually using < or > keep visual mode afterwards
+vnoremap > >gv
+vnoremap < <gv
+
+" Shifting operations using tab
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 " }}}
 " Buffers & windows {{{
 " reuse window when changing buffers without saving
@@ -55,8 +66,6 @@ let g:airline#extensions#tabline#enabled = 1
 
 " " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-let g:airline_powerline_fonts = 1
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
@@ -83,6 +92,13 @@ set ignorecase
 set smartcase
 set incsearch
 set hlsearch
+
+" Use silver searcher instead of ack for faster search, start searching from project root instead of cwd oder was soll
+let g:ag_working_path_mode="r"
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
+
 " }}}
 " GUI Settings {{{
 " line numbers
@@ -98,7 +114,7 @@ autocmd GUIEnter * set visualbell t_vb=
 " Always show the status-line
 set laststatus=2
 " Wraps lines after the given char-limit
-"set textwidth=120
+set textwidth=120
 
 " Have a colored line as a ruler
 set colorcolumn=120
@@ -220,7 +236,7 @@ Plugin 'ervandew/supertab'
 " Zoom for multiple windows
 Plugin 'regedarek/ZoomWin'
 " Status-bar on steroids
-Plugin 'powerline/powerline'
+ Plugin 'powerline/powerline'
 " Silver searcher for vim
 Plugin 'rking/ag.vim'
 " Some nice colors
@@ -228,24 +244,26 @@ Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'bling/vim-airline'
+"Plugin 'bling/vim-airline'
 call vundle#end() " required
+" For remaining manual package management
+execute pathogen#infect()
 "}}}
 " Colors {{{
 let g:color_schemes = ['badwold', 'vim-colorschemes']
 " Setup color after all plugins have been loaded
-if HasColorScheme('badwolf') && s:plugins
-  colorscheme badwolf
-endif
+"if HasColorScheme('badwolf') && s:plugins
+"  colorscheme badwolf
+"endif
 
 "" Solarized theme
 " set background=dark
 " let g:solarized_termcolors = 256
 " colorscheme solarized
-"set t_Co=256
-"set background=dark
-"colorscheme solarized
-" }}}
+set t_Co=256
+set background=dark
+colorscheme solarized
+"}}}
 
 " Fold down this file
 set modelines=1
