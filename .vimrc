@@ -1,4 +1,4 @@
-" Description: Lots of stuff from the interwebs to make vim better
+   " Description: Lots of stuff from the interwebs to make vim better
 " Author: dadarakt
 
 " OS level information {{{
@@ -64,8 +64,11 @@ set hidden
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
 
-" " Show just the filename
+" Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Use proper airline fonts
+let g:airline_powerline_fonts = 1
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
@@ -98,6 +101,9 @@ let g:ag_working_path_mode="r"
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
+
+" Recursive ctags search
+set tags=tags;/
 
 " }}}
 " GUI Settings {{{
@@ -174,13 +180,14 @@ set autoread
 
 " }}}
 " Powerline {{{
-set guifont=Hack\ for\ Powerline:h15
-let g:Powerline_symbols = 'fancy'
-set encoding=utf-8
-set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
-set term=xterm-256color
-set termencoding=utf-8
+"set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
+"set guifont=Hack\ for\ Powerline:h15
+"let g:Powerline_symbols = 'fancy'
+"set encoding=utf-8
+"set t_Co=256
+"set fillchars+=stl:\ ,stlnc:\
+"set term=xterm-256color
+"set termencoding=utf-8
 " }}}
 " Remaps {{{
 " remap leader key for easier access
@@ -203,6 +210,26 @@ nnoremap gV `[v`]
 inoremap jk <esc>
 
 nnoremap <leader>a :Ag
+
+"" Function for the go plugin
+" Build, test and run
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+" splits to look up definitions 
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+" look up docs
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+" Look up implemented interfaces
+au FileType go nmap <Leader>s <Plug>(go-implements)
+" Display type information
+au FileType go nmap <Leader>i <Plug>(go-info)
+" Rename identifier
+au FileType go nmap <Leader>e <Plug>(go-rename)
 "}}}
 " Custom Functions {{{
 " Check if a colorscheme exists http://stackoverflow.com/a/5703164
@@ -236,21 +263,30 @@ Plugin 'ervandew/supertab'
 " Zoom for multiple windows
 Plugin 'regedarek/ZoomWin'
 " Status-bar on steroids
- Plugin 'powerline/powerline'
+"Plugin 'powerline/powerline'
+Plugin 'bling/vim-airline'
 " Silver searcher for vim
 Plugin 'rking/ag.vim'
 " Some nice colors
 Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
-"Plugin 'bling/vim-airline'
+" Scala syntax highlighting
+Plugin 'derekwyatt/vim-scala'
+" Cached auto completion
+Plugin 'Shougo/neocomplete.vim'
+" Commenting in/out lines/blocks
+Plugin 'scrooloose/nerdcommenter'
+" Better support for go
+Plugin 'fatih/vim-go'
+" Some colour please
+Plugin 'fatih/molokai'
 call vundle#end() " required
 " For remaining manual package management
 execute pathogen#infect()
 "}}}
 " Colors {{{
-let g:color_schemes = ['badwold', 'vim-colorschemes']
+let g:color_schemes = ['molokai', 'badwolf', 'solarized', 'vim-colorschemes']
 " Setup color after all plugins have been loaded
 "if HasColorScheme('badwolf') && s:plugins
 "  colorscheme badwolf
@@ -262,7 +298,16 @@ let g:color_schemes = ['badwold', 'vim-colorschemes']
 " colorscheme solarized
 set t_Co=256
 set background=dark
-colorscheme solarized
+"let g:molokai_original = 1
+"let g:rehash256 = 1
+
+colorscheme molokai
+" Some settings for better go support
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 "}}}
 
 " Fold down this file
