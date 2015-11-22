@@ -178,6 +178,9 @@ set directory=~/.vim/swap//
 " Automatically reread the file on change
 set autoread
 
+" Rust autoformat
+  g:rustfmt_autosave = 1
+
 " }}}
 " Powerline {{{
 "set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
@@ -281,6 +284,8 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'fatih/vim-go'
 " Some colour please
 Plugin 'fatih/molokai'
+" Rust support 
+Plugin 'rust-lang/rust.vim'
 call vundle#end() " required
 " For remaining manual package management
 execute pathogen#infect()
@@ -297,9 +302,9 @@ let g:color_schemes = ['molokai', 'badwolf', 'solarized', 'vim-colorschemes']
 " let g:solarized_termcolors = 256
 " colorscheme solarized
 set t_Co=256
-set background=dark
-"let g:molokai_original = 1
-"let g:rehash256 = 1
+"set background=dark
+let g:molokai_original = 1
+let g:rehash256 = 1
 
 colorscheme molokai
 " Some settings for better go support
