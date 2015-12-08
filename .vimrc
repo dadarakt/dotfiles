@@ -1,4 +1,4 @@
-   " Description: Lots of stuff from the interwebs to make vim better
+" Description: Lots of stuff from the interwebs to make vim better
 " Author: dadarakt
 
 " OS level information {{{
@@ -179,7 +179,7 @@ set directory=~/.vim/swap//
 set autoread
 
 " Rust autoformat
-  g:rustfmt_autosave = 1
+"let g:rustfmt_autosave = 1
 
 " }}}
 " Powerline {{{
@@ -254,6 +254,7 @@ endfunction
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" Well obviously, vundle itself needs to run
 Plugin 'gmarik/Vundle.vim'
 " The sensible choice
 Plugin 'tpope/vim-sensible'
