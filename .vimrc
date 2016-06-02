@@ -57,36 +57,6 @@ inoremap <S-Tab> <C-D>
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 " }}}
-" Buffers & windows {{{
-" reuse window when changing buffers without saving
-set hidden
-
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
-
-" Use proper airline fonts
-let g:airline_powerline_fonts = 1
-
-" To open a new empty buffer
-" This replaces :tabnew which I used to bind to this mapping
-nmap <leader>T :enew<cr>
-
-" Move to the next buffer
-nmap <leader>l :bnext<CR>
-
-" Move to the previous buffer
-nmap <leader>h :bprevious<CR>
-
-" Close the current buffer and move to the previous one
- "This replicates the idea of closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR>
-
-" Show all open buffers and their status
-nmap <leader>bl :ls<CR>
-" }}}
 " Search {{{
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
@@ -234,6 +204,36 @@ au FileType go nmap <Leader>i <Plug>(go-info)
 " Rename identifier
 au FileType go nmap <Leader>e <Plug>(go-rename)
 "}}}
+" Buffers & windows {{{
+" reuse window when changing buffers without saving
+set hidden
+
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Use proper airline fonts
+let g:airline_powerline_fonts = 1
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+ "This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+" }}}
 " Custom Functions {{{
 " Check if a colorscheme exists http://stackoverflow.com/a/5703164
 function! HasColorScheme(scheme)
@@ -271,10 +271,11 @@ Plugin 'regedarek/ZoomWin'
 Plugin 'bling/vim-airline'
 " Silver searcher for vim
 Plugin 'rking/ag.vim'
-" Some nice colors
+" Some color, please
 Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'fatih/molokai'
 " Scala syntax highlighting
 Plugin 'derekwyatt/vim-scala'
 " Cached auto completion
@@ -283,13 +284,23 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'scrooloose/nerdcommenter'
 " Better support for go
 Plugin 'fatih/vim-go'
-" Some colour please
-Plugin 'fatih/molokai'
 " Rust support 
-Plugin 'rust-lang/rust.vim'
-call vundle#end() " required
-" For remaining manual package management
-execute pathogen#infect()
+"Plugin 'rust-lang/rust.vim'
+"
+" FRONTEND SECTION
+" javascript
+Plugin 'pangloss/vim-javascript'
+" syntax for javascript and angular
+Plugin 'othree/javascript-libraries-syntax.vim'
+" more angular support
+Plugin 'matthewsimo/angular-vim-snippets'
+" coffescript support
+ Plugin 'kchmck/vim-coffee-script'
+" support for angular
+ Plugin 'burnettk/vim-angular'
+" syntax checking hacks for vim
+Plugin 'scrooloose/syntastic.git'
+call vundle#end()
 "}}}
 " Colors {{{
 let g:color_schemes = ['molokai', 'badwolf', 'solarized', 'vim-colorschemes']
@@ -307,7 +318,10 @@ set t_Co=256
 let g:molokai_original = 1
 let g:rehash256 = 1
 
-colorscheme molokai
+set background=dark
+"colorscheme molokai
+colorscheme solarized
+
 " Some settings for better go support
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
