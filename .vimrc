@@ -28,8 +28,14 @@ set nocompatible
 " More history plz
 set history=1000
 
+set gdefault
+
+" More reasonable pasting
+set pastetoggle=<F2>
+
 " Activate syntax highlighting
 syntax on
+
 " }}}
 " Tabs and Spacing {{{
 
@@ -203,6 +209,22 @@ au FileType go nmap <Leader>s <Plug>(go-implements)
 au FileType go nmap <Leader>i <Plug>(go-info)
 " Rename identifier
 au FileType go nmap <Leader>e <Plug>(go-rename)
+
+" So that explore is the default on :E (among other alternatives)
+cabbrev E Explore
+" type ',s' to save the buffers etc. Reopen where you were with Vim with 'vim -S'
+nnoremap <leader>s :mksession<CR> 
+
+" Easier nerd-tree toggle
+map <C-n> :NERDTreeToggle<CR>
+" Open current buffer in nerd-tree
+map <leader>r :NERDTreeFind<cr>
+
+" Navigate between splits
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
 "}}}
 " Buffers & windows {{{
 " reuse window when changing buffers without saving
@@ -246,6 +268,10 @@ function! HasColorScheme(scheme)
   endfor
   return 0
 endfunction
+
+" Close vim if the only open buffer is the nerdtree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 " }}}
 "{{{ Vundle
 " see :h vundle for questions with package managing
@@ -256,50 +282,76 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " Well obviously, vundle itself needs to run
 Plugin 'gmarik/Vundle.vim'
-" The sensible choice
+
+" GENERAL PLUGINS
+" The sensible choice for a starter
 Plugin 'tpope/vim-sensible'
 " Github support
-Plugin 'tpope/vim-fugitive'
+" Plugin 'tpope/vim-fugitive'
 " File searching
 Plugin 'wincent/command-t'
 " Tab completion (surprise)
 Plugin 'ervandew/supertab'
 " Zoom for multiple windows
 Plugin 'regedarek/ZoomWin'
+" Silver searcher for vim
+Plugin 'rking/ag.vim'
+" syntax checking on filesave with display 
+Plugin 'scrooloose/syntastic.git'
+
+" EDITOR LOOK AND FEEL
 " Status-bar on steroids
 "Plugin 'powerline/powerline'
 Plugin 'bling/vim-airline'
-" Silver searcher for vim
-Plugin 'rking/ag.vim'
+Plugin 'scrooloose/nerdtree'
 " Some color, please
 Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'fatih/molokai'
-" Scala syntax highlighting
-Plugin 'derekwyatt/vim-scala'
 " Cached auto completion
-Plugin 'Shougo/neocomplete.vim'
+"Plugin 'Shougo/neocomplete.vim'
 " Commenting in/out lines/blocks
 Plugin 'scrooloose/nerdcommenter'
-" Better support for go
+
+" PROGRAMMING LANGUAGE SUPPORT
+
+" SCALA
+" Scala syntax highlighting
+Plugin 'derekwyatt/vim-scala'
+
+" XML
+Plugin 'othree/xml.vim'
+
+" HTML & CSS
+Plugin 'mattn/emmet-vim'
+
+" GO
 Plugin 'fatih/vim-go'
-" Rust support 
+
+" RUST
 "Plugin 'rust-lang/rust.vim'
-"
-" FRONTEND SECTION
-" javascript
+
+" JAVASCRIPT
 Plugin 'pangloss/vim-javascript'
-" syntax for javascript and angular
+" syntax for javascript
 Plugin 'othree/javascript-libraries-syntax.vim'
-" more angular support
-Plugin 'matthewsimo/angular-vim-snippets'
-" coffescript support
+
+" COFFESCRIPT
  Plugin 'kchmck/vim-coffee-script'
+
+" ANGULAR
 " support for angular
  Plugin 'burnettk/vim-angular'
-" syntax checking hacks for vim
-Plugin 'scrooloose/syntastic.git'
+" more angular support
+Plugin 'matthewsimo/angular-vim-snippets'
+
+" TYPESCRIPT
+" Syntax
+Plugin 'leafgarland/typescript-vim'
+" Typescript support
+Plugin 'Quramy/tsuquyomi'
+
 call vundle#end()
 "}}}
 " Colors {{{
