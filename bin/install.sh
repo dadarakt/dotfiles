@@ -23,3 +23,4 @@ sudo apt-get install vim-nox;
 # further steps:
 # - run :PluginInstall to setup all the configured plugins
 # - go to ~/.vim/bundle/command-t and run `rake make` to link the c extensions needed for command t
+# install 'hack' fontset to use everywhere

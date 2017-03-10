@@ -3,6 +3,7 @@
 
 " OS level information {{{
 filetype plugin indent on
+filetype plugin on
 let s:OS = 'linux'
 let os = substitute(system('uname'), '\n', '', '')
 if os ==   'Darwin' || os == 'Mac'
@@ -62,6 +63,11 @@ nnoremap <S-Tab> <<_
 inoremap <S-Tab> <C-D>
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
+
+
+" Setup for TS indentation
+let js_indent_flat_switch=1
+let js_indent_typescript=1
 " }}}
 " Search {{{
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
@@ -77,6 +83,9 @@ let g:ag_working_path_mode="r"
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
+
+" Command-T settings
+let g:CommandTWildIgnore=&wildignore . ",**/lib_managed/*,*.min.js,**/node_modules/*,**/bower_components/*,*.class,*.o,**/.git/*,**/target/*,**/vendor/*,**/generated/*,**/deploy/*"
 
 " Recursive ctags search
 set tags=tags;/
@@ -220,11 +229,17 @@ map <C-n> :NERDTreeToggle<CR>
 " Open current buffer in nerd-tree
 map <leader>r :NERDTreeFind<cr>
 
+" SPLITS
+" Create new splits more naturally 
+set splitbelow
+set splitright
 " Navigate between splits
-nmap <silent> <A-Up> :wincmd k<CR>
-nmap <silent> <A-Down> :wincmd j<CR>
-nmap <silent> <A-Left> :wincmd h<CR>
-nmap <silent> <A-Right> :wincmd l<CR>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+
 "}}}
 " Buffers & windows {{{
 " reuse window when changing buffers without saving
@@ -272,6 +287,12 @@ endfunction
 " Close vim if the only open buffer is the nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" use youcompleteme to trigger the autofill once we invoce '.'
+if !exists("g:ycm_semantic_triggers")
+  let g:ycm_semantic_triggers = {}
+  endif
+  let g:ycm_semantic_triggers['typescript'] = ['.']
+
 " }}}
 "{{{ Vundle
 " see :h vundle for questions with package managing
@@ -283,23 +304,29 @@ call vundle#begin()
 " Well obviously, vundle itself needs to run
 Plugin 'gmarik/Vundle.vim'
 
+"""
 " GENERAL PLUGINS
+"""
+
 " The sensible choice for a starter
 Plugin 'tpope/vim-sensible'
 " Github support
 " Plugin 'tpope/vim-fugitive'
 " File searching
 Plugin 'wincent/command-t'
-" Tab completion (surprise)
-Plugin 'ervandew/supertab'
 " Zoom for multiple windows
 Plugin 'regedarek/ZoomWin'
 " Silver searcher for vim
 Plugin 'rking/ag.vim'
 " syntax checking on filesave with display 
 Plugin 'scrooloose/syntastic.git'
+" asynchronous command execution
+Plugin 'Shougo/vimproc.vim'
 
+"""
 " EDITOR LOOK AND FEEL
+"""
+
 " Status-bar on steroids
 "Plugin 'powerline/powerline'
 Plugin 'bling/vim-airline'
@@ -313,8 +340,13 @@ Plugin 'fatih/molokai'
 "Plugin 'Shougo/neocomplete.vim'
 " Commenting in/out lines/blocks
 Plugin 'scrooloose/nerdcommenter'
+" Autocomplete for vim
+" includes clang_complete, autocomplpop, supertab and neocomplcache
+Plugin 'Valloric/YouCompleteMe'
 
+"""
 " PROGRAMMING LANGUAGE SUPPORT
+"""
 
 " SCALA
 " Scala syntax highlighting
@@ -325,6 +357,7 @@ Plugin 'othree/xml.vim'
 
 " HTML & CSS
 Plugin 'mattn/emmet-vim'
+Plugin 'Valloric/MatchTagAlways'
 
 " GO
 Plugin 'fatih/vim-go'
@@ -349,8 +382,12 @@ Plugin 'matthewsimo/angular-vim-snippets'
 " TYPESCRIPT
 " Syntax
 Plugin 'leafgarland/typescript-vim'
-" Typescript support
+" IDE functionality
 Plugin 'Quramy/tsuquyomi'
+" template highlighting
+Plugin 'Quramy/vim-js-pretty-template'
+" template checking 
+Plugin 'Quramy/ng-tsserver'
 
 call vundle#end()
 "}}}
