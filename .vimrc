@@ -65,9 +65,6 @@ vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 
 
-" Setup for TS indentation
-let js_indent_flat_switch=1
-let js_indent_typescript=1
 " }}}
 " Search {{{
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
@@ -234,10 +231,10 @@ map <leader>r :NERDTreeFind<cr>
 set splitbelow
 set splitright
 " Navigate between splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+"nnoremap <C-J> <C-W><C-J>
+"nnoremap <C-K> <C-W><C-K>
+"nnoremap <C-L> <C-W><C-L>
+"nnoremap <C-H> <C-W><C-H>
 
 
 "}}}
@@ -287,13 +284,39 @@ endfunction
 " Close vim if the only open buffer is the nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+
+" }}}
+"{{{ Language Options
+" TypeScript
+
 " use youcompleteme to trigger the autofill once we invoce '.'
 if !exists("g:ycm_semantic_triggers")
   let g:ycm_semantic_triggers = {}
   endif
   let g:ycm_semantic_triggers['typescript'] = ['.']
 
-" }}}
+" Setup for TS indentation
+let js_indent_flat_switch=0
+let js_indent_typescript=1
+
+" Integration with syntastic
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi']
+
+" Renaming symbols in the code
+autocmd FileType typescript nmap <buffer> <Leader>e <Plug>(TsuquyomiRenameSymbol)
+autocmd FileType typescript nmap <buffer> <Leader>E <Plug>(TsuquyomiRenameSymbolC)
+
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+
+autocmd FileType typescript setlocal ts=4 sts=4 sw=4
+
+" HTML
+autocmd FileType html setlocal ts=4 sts=4 sw=4
+
+
+"}}}
 "{{{ Vundle
 " see :h vundle for questions with package managing
 " set the runtime path to include Vundle and initialize, also let vundle manage
@@ -343,6 +366,8 @@ Plugin 'scrooloose/nerdcommenter'
 " Autocomplete for vim
 " includes clang_complete, autocomplpop, supertab and neocomplcache
 Plugin 'Valloric/YouCompleteMe'
+" Autocomplete braces
+Plugin 'jiangmiao/auto-pairs'
 
 """
 " PROGRAMMING LANGUAGE SUPPORT
@@ -378,6 +403,7 @@ Plugin 'othree/javascript-libraries-syntax.vim'
  Plugin 'burnettk/vim-angular'
 " more angular support
 Plugin 'matthewsimo/angular-vim-snippets'
+Plugin 'Quramy/ng-tsserver'
 
 " TYPESCRIPT
 " Syntax
@@ -386,8 +412,7 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'Quramy/tsuquyomi'
 " template highlighting
 Plugin 'Quramy/vim-js-pretty-template'
-" template checking 
-Plugin 'Quramy/ng-tsserver'
+Plugin 'jason0x43/vim-js-indent'
 
 call vundle#end()
 "}}}
