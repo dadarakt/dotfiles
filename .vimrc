@@ -84,7 +84,7 @@ nnoremap \ :Ag<SPACE>
 " Command-T settings
 let g:CommandTWildIgnore=&wildignore . ",**/lib_managed/*,*.min.js,**/node_modules/*,**/bower_components/*,*.class,*.o,**/.git/*,**/target/*,**/vendor/*,**/generated/*,**/deploy/*"
 
-" Recursive ctags search
+" Recursive ctags search, so that tags can be accessed in sub-folders
 set tags=tags;/
 
 " }}}
@@ -284,6 +284,9 @@ endfunction
 " Close vim if the only open buffer is the nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" Checklist settings
+au BufNewFile,BufRead *.chklst setf chklst 
+let g:checklist_use_timestamps = 1 "Default 0
 
 " }}}
 "{{{ Language Options
@@ -333,13 +336,16 @@ Plugin 'gmarik/Vundle.vim'
 
 " The sensible choice for a starter
 Plugin 'tpope/vim-sensible'
-" Github support
-" Plugin 'tpope/vim-fugitive'
+
+" Git support: git commands and git annotations next to line numbers
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+"
 " File searching
 Plugin 'wincent/command-t'
-" Zoom for multiple windows
+" Zoom for multiple windows (toggle with <c-w>o)
 Plugin 'regedarek/ZoomWin'
-" Silver searcher for vim
+" Silver searcher for vim <leader>a
 Plugin 'rking/ag.vim'
 " syntax checking on filesave with display 
 Plugin 'scrooloose/syntastic.git'
@@ -368,6 +374,8 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/YouCompleteMe'
 " Autocomplete braces
 Plugin 'jiangmiao/auto-pairs'
+" Checklisting
+Plugin 'ctruett/Checklist.vim'
 
 """
 " PROGRAMMING LANGUAGE SUPPORT
@@ -396,7 +404,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'othree/javascript-libraries-syntax.vim'
 
 " COFFESCRIPT
- Plugin 'kchmck/vim-coffee-script'
+Plugin 'kchmck/vim-coffee-script'
 
 " ANGULAR
 " support for angular
@@ -413,6 +421,9 @@ Plugin 'Quramy/tsuquyomi'
 " template highlighting
 Plugin 'Quramy/vim-js-pretty-template'
 Plugin 'jason0x43/vim-js-indent'
+
+" RAML
+Plugin 'IN3D/vim-raml'
 
 call vundle#end()
 "}}}

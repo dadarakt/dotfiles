@@ -12,9 +12,3 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 # Shortcuts and helpers
 alias lm="ls -la --block-size=M"
-
-ssh_ai_dev() {
-		ssh dev@ai$1.dev.quantifind.com
-}
-
-alias ai_dev=ssh_ai_dev

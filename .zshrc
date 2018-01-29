@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/jannis/.oh-my-zsh
+export ZSH=/home/jannis/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -87,5 +87,8 @@ ssh_ai() {
 		ssh $1@ai$2.$1.quantifind.com
 }
 alias ai=ssh_ai
+alias todo=todotxt-machine
 
 export PATH=$PATH:/usr/local/go/bin
+export PATH=~/.local/bin:$PATH
+alias lm="ls -la --block-size=M"
