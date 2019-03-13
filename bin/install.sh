@@ -5,28 +5,28 @@
 # fundamentals
 sudo apt-get install zsh
 sudo apt-get install git-core
+sudo add-apt repository ppa:gnome-terminator
+sudo add-apt-repository ppa:gnome-terminator
+sudo apt-get update
+sudo apt-get install terminator
+sudo apt-get install vim-nox;
+
 
 # install oh-my-zsh and set the shell
 wget https://github.com/robbyrussel/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
 chsh -s `which zsh`
 
-# used to clone the dotfiles and put them in their respective place
-git clone https://github.com/dadarakt/dotfiles.git ~/dotfiles
-cp ~/dotfiles/{.vimrc, .profile, .zshrc} ~/
-
 # install vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-# Installs vim with ruby support - mostly for command-t to work
-sudo apt-get install vim-nox;
+# used to clone the dotfiles and put them in their respective place
+git clone https://github.com/dadarakt/dotfiles.git ~/dotfiles
+cp ~/dotfiles/{.vimrc, .profile, .zshrc} ~/
+cp ~/dotfiles/jannis.vim ~/.vim/colors/
+cp ~/dotfiles/bureau-jannis.zsh-theme ~/.oh-my-zsh/themes/
 
-# install terminator for better usability
-sudo add-apt repository ppa:gnome-terminator
-sudo add-apt-repository ppa:gnome-terminator
-sudo apt-get update
-sudo apt-get install terminator
-
-# install powerline font
+# install powerline font - remember to use a patched version that also support file symbols for vim
+# https://github.com/ryanoasis/nerd-fonts
 cd
 wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
 wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
@@ -34,16 +34,3 @@ mv PowerlineSymbols.otf ~/.fonts/
 mkdir -p .config/fontconfig/conf.d #if directory doesn't exists
 fc-cache -vf ~/.fonts/
 mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
-
-# Set the theme
-echo 'ZSH_THEME="agnoster"' >> .zshrc	
-
-# Change color scheme to solarized
-sudo apt-get install dconf-cli
-git clone git://github.com/sigurdga/gnome-terminal-colors-solarized.git ~/.solarized
-cd ~/.solarized
-./install.sh
-cd
-wget https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark
-mv dircolors.ansi-dark .solarized
-
