@@ -15,9 +15,6 @@ Plugin 'gmarik/Vundle.vim'
 " GENERAL PLUGINS
 """
 
-" The sensible choice for a starter
-Plugin 'tpope/vim-sensible'
-
 " Git support: git commands and git annotations next to line numbers
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
@@ -32,6 +29,9 @@ Plugin 'rking/ag.vim'
 Plugin 'scrooloose/syntastic.git'
 " asynchronous command execution
 Plugin 'Shougo/vimproc.vim'
+" Fuzzy search with global installation
+Plugin 'junegunn/fzf'
+
 
 """
 " EDITOR LOOK AND FEEL
@@ -40,8 +40,12 @@ Plugin 'Shougo/vimproc.vim'
 " Status-bar on steroids
 "Plugin 'powerline/powerline'
 Plugin 'bling/vim-airline'
+Plugin 'ryanoasis/vim-devicons'
+
+" Nerdtree
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Some color, please
 Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
@@ -56,6 +60,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'jiangmiao/auto-pairs'
 " Checklisting
 Plugin 'ctruett/Checklist.vim'
+" Indentation lines
+Plugin 'Yggdroot/indentLine'
 
 """
 " PROGRAMMING LANGUAGE SUPPORT
@@ -144,6 +150,12 @@ set pastetoggle=<F2>
 " Activate syntax highlighting
 syntax on
 
+set hid
+
+set updatetime=100
+
+set encoding=UTF-8
+
 " }}}
 " Remaps {{{
 " remap leader key for easier access
@@ -167,6 +179,10 @@ inoremap jk <esc>
 
 nnoremap <leader>a :Ag
 
+" System clipboard yanking
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+
 
 " So that explore is the default on :E (among other alternatives)
 cabbrev E Explore
@@ -175,12 +191,70 @@ nnoremap <leader>s :mksession<CR>
 
 nnoremap <C-J> <C-O>
 nnoremap <C-K> <C-I>
+nnoremap <c-B> <c-]>
 
 
 " SPLITS
 " Create new splits more naturally 
 set splitbelow
 set splitright
+set fillchars+=vert:▏
+
+
+" Only redraw the editor when needed
+"set lazyredraw
+
+" For better command-line completion
+set wildmenu
+
+" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
+autocmd VimEnter * silent exec "! echo -ne '\e[1 q'"
+autocmd VimLeave * silent exec "! echo -ne '\e[5 q'"
+
+" Highlight TODO and FIXME
+" "
+" http://stackoverflow.com/questions/11709965/vim-highlight-the-word-todo-for-every-filetype
+augroup HiglightTODO
+    autocmd!
+    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO\|FIXME', -1)
+augroup END
+" }}}
+" File Operations {{{
+" Also allow for undos over persistet files
+if has('persistent_undo')
+    set undodir=~/.vim/undo//
+    set undofile
+    set undolevels=1000
+    set undoreload=10000
+endif
+
+" Use backups
+" Source: http://stackoverflow.com/a/15317146
+set backup
+set writebackup
+set backupdir=~/.vim/backup//
+
+" Use a specified swap folder
+" Source: http://stackoverflow.com/a/15317146
+set directory=~/.vim/swap//
+
+" Automatically reread the file on change
+set autoread
+
+" Rust autoformat
+"let g:rustfmt_autosave = 1
+
+" }}}
+" Powerline {{{
+"set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
+"set guifont=Hack\ for\ Powerline:h15
+"let g:Powerline_symbols = 'fancy'
+"set encoding=utf-8
+"set t_Co=256
+"set fillchars+=stl:\ ,stlnc:\
+"set term=xterm-256color
+"set termencoding=utf-8
+" }}}
 "}}}
 " Tabs and Spacing {{{
 
@@ -228,10 +302,17 @@ let g:CommandTWildIgnore=&wildignore . ",**/lib_managed/*,*.min.js,**/node_modul
 
 " Recursive ctags search, so that tags can be accessed in sub-folders
 set tags=tags;/
+
+" Keybindings for FZF
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 " }}}
 " GUI Settings {{{
 " line numbers
 set nu
+
 
 " No welcome message
 set shortmess=I
@@ -246,8 +327,7 @@ set laststatus=2
 set textwidth=100
 
 " Have a colored line as a ruler
-set colorcolumn=100
-set ruler
+ 
 
 " Briefly shows the matching bracket while inserting
 set sm
@@ -260,6 +340,10 @@ set showcmd
 
 " Highlight current line
 set cursorline
+
+" Indentation lines
+let g:indentLine_char = '▏'
+
 
 " Only redraw the editor when needed
 "set lazyredraw
@@ -330,6 +414,17 @@ map <leader>r :NERDTreeFind<cr>
 " Close vim if the only open buffer is the nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+"let g:NERDTreeDisableFileExtensionHighlight = 1
+"let g:NERDTreeDisableExactMatchHighlight = 1
+"let g:NERDTreeDisablePatternMatchHighlight = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+
 " }}}
 " Buffers & windows {{{
 " reuse window when changing buffers without saving
@@ -380,6 +475,11 @@ let g:checklist_use_timestamps = 1 "Default 0
 
 " }}}
 "{{{ Language Options
+" GIT
+" Remove gitgutter keymappings, as they conflict with buffer naviation <leader>h
+" and I don't use them right now
+let g:gitgutter_map_keys = 0
+
 " TypeScript
 
 " use youcompleteme to trigger the autofill once we invoce '.'
@@ -410,7 +510,17 @@ autocmd FileType html setlocal ts=4 sts=4 sw=4
 
 " Elixir settings
 let g:alchemist#elixir_erlang_src = "/usr/local/share/src"   
-autocmd BufWritePost *.exs,*.ex silent :!mix format %
+" Jump to definition via tag
+let g:alchemist_tag_map = '<C-B>'
+
+
+autocmd BufWritePost *.exs,*.ex call MixFormat()
+
+function MixFormat()
+  silent :!mix format %
+  cwindow
+  redraw!
+endfunction
 
 " GO Settings
 " Build, test and run
@@ -446,12 +556,12 @@ let g:color_schemes = ['molokai', 'badwolf', 'solarized', 'vim-colorschemes']
 " let g:solarized_termcolors = 256
 " colorscheme solarized
 set t_Co=256
-"set background=dark
-let g:molokai_original = 1
-let g:rehash256 = 1
 
+"set background=dark
+colorscheme jannis
 set background=dark
-colorscheme molokai
+let g:rehash256 = 1
+colorscheme jannis
 "colorscheme tango
 
 " Some settings for better go support

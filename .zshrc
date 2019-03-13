@@ -1,11 +1,11 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/jannis/.oh-my-zsh
+export ZSH=/home/lana/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster"
+ZSH_THEME="bureau-jannis"
 
 # Uncomment the following line to use case-sensitive completion.
  CASE_SENSITIVE="true"
@@ -92,3 +92,10 @@ alias todo=todotxt-machine
 export PATH=$PATH:/usr/local/go/bin
 export PATH=~/.local/bin:$PATH
 alias lm="ls -la --block-size=M"
+export TERM=xterm-color
+
+#Save iex history across sessions
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
