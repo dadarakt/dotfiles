@@ -44,8 +44,6 @@ Plugin 'ryanoasis/vim-devicons'
 
 " Nerdtree
 Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Some color, please
 Plugin 'sjl/badwolf'
 Plugin 'flazz/vim-colorschemes'
@@ -163,6 +161,7 @@ let mapleader = ','
 
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy, which is the default
 map Y y$
+map C c$
 
 " Map <C-L> (redraw screen) to also turn off search highlighting until the next search
 nnoremap <C-L> :nohl<CR><C-L>
@@ -173,9 +172,6 @@ nnoremap E $
 
 " Highlights the latest insert
 nnoremap gV `[v`]
-
-" quickly hit jk to escape
-inoremap jk <esc>
 
 nnoremap <leader>a :Ag
 
@@ -242,7 +238,7 @@ set directory=~/.vim/swap//
 set autoread
 
 " Rust autoformat
-"let g:rustfmt_autosave = 1
+let g:rustfmt_autosave = 1
 
 " }}}
 " Powerline {{{
@@ -322,7 +318,7 @@ set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
 " Always show the status-line
-set laststatus=2
+set laststatus=1
 " Wraps lines after the given char-limit
 set textwidth=100
 
@@ -351,17 +347,6 @@ let g:indentLine_char = '▏'
 " For better command-line completion
 set wildmenu
 
-" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
-autocmd VimEnter * silent exec "! echo -ne '\e[1 q'"
-autocmd VimLeave * silent exec "! echo -ne '\e[5 q'"
-
-" Highlight TODO and FIXME
-" "
-" http://stackoverflow.com/questions/11709965/vim-highlight-the-word-todo-for-every-filetype
-augroup HiglightTODO
-    autocmd!
-    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO\|FIXME', -1)
-augroup END
 " }}}
 " File Operations {{{
 " Also allow for undos over persistet files
@@ -403,7 +388,7 @@ set autoread
 " Delete buffer of file, when deleting file in tree
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
+"let NERDTreeDirArrows = 1
 
 " Easier nerd-tree toggle
 map <C-n> :NERDTreeToggle<CR>
@@ -414,9 +399,6 @@ map <leader>r :NERDTreeFind<cr>
 " Close vim if the only open buffer is the nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-"let g:NERDTreeDisableFileExtensionHighlight = 1
-"let g:NERDTreeDisableExactMatchHighlight = 1
-"let g:NERDTreeDisablePatternMatchHighlight = 1
 let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
@@ -496,10 +478,6 @@ let js_indent_typescript=1
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi']
 
-" Renaming symbols in the code
-autocmd FileType typescript nmap <buffer> <Leader>e <Plug>(TsuquyomiRenameSymbol)
-autocmd FileType typescript nmap <buffer> <Leader>E <Plug>(TsuquyomiRenameSymbolC)
-
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
 
@@ -518,7 +496,6 @@ autocmd BufWritePost *.exs,*.ex call MixFormat()
 
 function MixFormat()
   silent :!mix format %
-  cwindow
   redraw!
 endfunction
 
