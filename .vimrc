@@ -65,7 +65,6 @@ Plugin 'Yggdroot/indentLine'
 " PROGRAMMING LANGUAGE SUPPORT
 """
 
-" SCALA
 " Scala syntax highlighting
 Plugin 'derekwyatt/vim-scala'
 
@@ -80,31 +79,12 @@ Plugin 'Valloric/MatchTagAlways'
 Plugin 'fatih/vim-go'
 
 " RUST
-"Plugin 'rust-lang/rust.vim'
+Plugin 'rust-lang/rust.vim'
 
 " JAVASCRIPT
 Plugin 'pangloss/vim-javascript'
 " syntax for javascript
 Plugin 'othree/javascript-libraries-syntax.vim'
-
-" COFFESCRIPT
-Plugin 'kchmck/vim-coffee-script'
-
-" ANGULAR
-" support for angular
-Plugin 'burnettk/vim-angular'
-" more angular support
-Plugin 'matthewsimo/angular-vim-snippets'
-Plugin 'Quramy/ng-tsserver'
-
-" TYPESCRIPT
-" Syntax
-Plugin 'leafgarland/typescript-vim'
-" IDE functionality
-Plugin 'Quramy/tsuquyomi'
-" template highlighting
-Plugin 'Quramy/vim-js-pretty-template'
-Plugin 'jason0x43/vim-js-indent'
 
 " ELIXIR
 Plugin 'elixir-editors/vim-elixir'
@@ -148,6 +128,8 @@ set pastetoggle=<F2>
 " Activate syntax highlighting
 syntax on
 
+set autoread
+
 set hid
 
 set updatetime=100
@@ -158,6 +140,7 @@ set encoding=UTF-8
 " Remaps {{{
 " remap leader key for easier access
 let mapleader = ','
+
 
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy, which is the default
 map Y y$
@@ -189,6 +172,50 @@ nnoremap <C-J> <C-O>
 nnoremap <C-K> <C-I>
 nnoremap <c-B> <c-]>
 
+" Helpers for terminal mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-s> <C-\><C-n><C-w>h
+tnoremap <C-d> <C-\><C-n><C-w>j
+tnoremap <C-e> <C-\><C-n><C-w>k
+tnoremap <C-f> <C-\><C-n><C-w>l
+
+" Move between splits with control 
+map <C-s> <C-w>h
+map <C-d> <C-w>j
+map <C-e> <C-w>k
+map <C-f> <C-w>l
+
+
+function! GetVisualSelection()
+  let [line_start, column_start] = getpos("'<")[1:2]
+  let [line_end, column_end] = getpos("'>")[1:2]
+  let lines = getline(line_start, line_end)
+  if len(lines) == 0
+      return ''
+  endif
+  let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][column_start - 1:]
+  return lines
+endfunction
+
+
+function! ExecuteSingleLineInIEx()
+  let line = getline(".")
+  breakadd here
+  execute "IEx ". line
+  wincmd p
+endfunction
+
+function! ExecuteMultipleInIEx(statements)
+  lines = GetVisualSelection()
+  for line in lines
+    execute "IEx ". a:statement
+  endfor
+  wincmd p
+endfunction
+
+autocmd FileType elixir nnoremap <leader>e :call ExecuteSingleLineInIEx() <CR>
+autocmd FileType elixir xnoremap <leader>e :call ExecuteMultipleInIEx() <CR>
 
 " SPLITS
 " Create new splits more naturally 
@@ -241,17 +268,6 @@ set autoread
 let g:rustfmt_autosave = 1
 
 " }}}
-" Powerline {{{
-"set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
-"set guifont=Hack\ for\ Powerline:h15
-"let g:Powerline_symbols = 'fancy'
-"set encoding=utf-8
-"set t_Co=256
-"set fillchars+=stl:\ ,stlnc:\
-"set term=xterm-256color
-"set termencoding=utf-8
-" }}}
-"}}}
 " Tabs and Spacing {{{
 
 " Backspacing over indent, linebreaks and inserts
@@ -369,9 +385,6 @@ set directory=~/.vim/swap//
 
 " Automatically reread the file on change
 set autoread
-
-" Rust autoformat
-"let g:rustfmt_autosave = 1
 
 " }}}
 " Powerline {{{
@@ -496,7 +509,7 @@ autocmd BufWritePost *.exs,*.ex call MixFormat()
 
 function MixFormat()
   silent :!mix format %
-  redraw!
+  :e!
 endfunction
 
 " GO Settings
@@ -536,7 +549,7 @@ set t_Co=256
 
 "set background=dark
 colorscheme jannis
-set background=dark
+set background=light
 let g:rehash256 = 1
 colorscheme jannis
 "colorscheme tango
