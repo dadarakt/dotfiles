@@ -1,0 +1,20 @@
+{
+  "keyboard.dispatch": "keyCode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.minimap.maxColumn": 100,
+  "window.zoomLevel": 0,
+  "[elixir]": {
+    "editor.quickSuggestions": true
+  },
+  "vim.easymotionMarkerFontSize": "10",
+  "breadcrumbs.enabled": true,
+  "vim.leader": "<space>",
+  "vim.hlsearch": true,
+  "workbench.statusBar.feedback.visible": false,
+  "workbench.statusBar.visible": false,
+  "workbench.editor.closeOnFileDelete": true,
+  "explorer.autoReveal": false,
+  "workbench.colorTheme": "Default Light+",
+  "files.autoSave": "afterDelay"
+}
