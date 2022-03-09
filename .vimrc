@@ -1,4 +1,4 @@
-" Description: Vim configuration to my personal liking 
+" Description: Vim configuration to my personal liking
 " Author: dadarakt
 
 "{{{ Vundle
@@ -19,7 +19,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 " Zoom for multiple windows (toggle with <c-w>o)
 Plugin 'regedarek/ZoomWin'
-" syntax checking on filesave with display 
+" syntax checking on filesave with display
 Plugin 'scrooloose/syntastic.git'
 " asynchronous command execution
 Plugin 'Shougo/vimproc.vim'
@@ -37,10 +37,10 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'scrooloose/nerdtree'
 " Commenting in/out lines/blocks
 Plugin 'scrooloose/nerdcommenter'
-" Autocomplete braces
-"Plugin 'jiangmiao/auto-pairs'
 " Indentation lines
 Plugin 'morhetz/gruvbox'
+" Close (X|HT)ML tags
+Plugin 'alvan/vim-closetag'
 
 """
 " PROGRAMMING LANGUAGE SUPPORT
@@ -59,8 +59,11 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 " HTML & CSS
 Plugin 'mattn/emmet-vim'
 Plugin 'Valloric/MatchTagAlways'
+" C#
+Plugin 'OmniSharp/omnisharp-vim'
 
 call vundle#end()
+
 "}}}
 " OS level information {{{
 filetype plugin indent on
@@ -95,6 +98,8 @@ set gdefault
 " More reasonable pasting
 set pastetoggle=<F2>
 
+set mouse=a
+
 " Activate syntax highlighting
 syntax on
 
@@ -126,8 +131,8 @@ let g:ale_elixir_elixir_ls_release = expand("~/src/elixir-ls/rel")
 " Optional, configure as-you-type completions
 set completeopt=menu,menuone,preview,noselect,noinsert
 let g:ale_completion_enabled = 1
-:highlight ALEError ctermbg=none cterm=underline
-:highlight ALEWarning ctermbg=none cterm=underline
+highlight ALEError ctermbg=none cterm=underline
+highlight ALEWarning ctermbg=none cterm=underline
 
 " }}}
 " Remaps {{{
@@ -160,7 +165,7 @@ noremap <Leader>p "+p
 " So that explore is the default on :E (among other alternatives)
 cabbrev E Explore
 " type ',s' to save the buffers etc. Reopen where you were with Vim with 'vim -S'
-nnoremap <leader>s :mksession<CR> 
+nnoremap <leader>s :mksession<CR>
 
 nnoremap  <C-J>       <C-O>
 nnoremap  <C-K>       <C-I>
@@ -180,7 +185,7 @@ tnoremap <C-d> <C-\><C-n><C-w>j
 tnoremap <C-e> <C-\><C-n><C-w>k
 tnoremap <C-f> <C-\><C-n><C-w>l
 
-" Move between splits with control 
+" Move between splits with control
 map <C-s> <C-w>h
 map <C-d> <C-w>j
 map <C-e> <C-w>k
@@ -219,7 +224,7 @@ autocmd FileType elixir nnoremap <leader>e :call ExecuteSingleLineInIEx() <CR>
 autocmd FileType elixir xnoremap <leader>e :call ExecuteMultipleInIEx() <CR>
 
 " SPLITS
-" Create new splits more naturally 
+" Create new splits more naturally
 set splitbelow
 set splitright
 set fillchars+=vert:▏
@@ -296,9 +301,6 @@ set smartcase
 set incsearch
 set hlsearch
 
-"let g:ag_working_path_mode="r"
-" bind \ (backward slash) to grep shortcut
-"command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<CR>
 
 " Recursive ctags search, so that tags can be accessed in sub-folders
@@ -311,11 +313,6 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
-
-"command! -bang -nargs=? -complete=dir Files
-    "\ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'cat {}']}, <bang>0)
-
-"let g:fzf_layout = { 'window': { 'width': 1, 'height': 0.4, 'yoffset': 1, 'border': 'horizontal' } }
 
 " }}}
 " GUI Settings {{{
@@ -365,7 +362,7 @@ let g:indentLine_char = '▏'
 " For better command-line completion
 set wildmenu
 
-" Don't wrap lines  
+" Don't wrap lines
 set wrap
 set textwidth=0
 set wrapmargin=0
@@ -445,6 +442,9 @@ let g:gitgutter_map_keys = 0
 " HTML
 autocmd FileType html setlocal ts=4 sts=4 sw=4
 
+" C#
+autocmd FileType cs setlocal ts=4 sts=4 sw=4
+
 " Elixir settings
 " Uncomment to enable formatting on write for elixir
 "autocmd BufWritePost *.exs,*.ex call MixFormat()
@@ -464,4 +464,4 @@ colorscheme gruvbox
 " Fold down this file
 set modelines=1
 "vim:foldmethod=marker:foldlevel=0
-"
+
