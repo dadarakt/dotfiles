@@ -154,7 +154,6 @@ nnoremap E $
 nnoremap gV `[v`]
 
 nnoremap <leader>t :Files<CR>
-nnoremap <C-P> :Files<CR>
 "nnoremap <leader>a :Ag
 nnoremap <leader>f :Ag<CR>
 
@@ -190,38 +189,6 @@ map <C-s> <C-w>h
 map <C-d> <C-w>j
 map <C-e> <C-w>k
 map <C-f> <C-w>l
-
-
-function! GetVisualSelection()
-  let [line_start, column_start] = getpos("'<")[1:2]
-  let [line_end, column_end] = getpos("'>")[1:2]
-  let lines = getline(line_start, line_end)
-  if len(lines) == 0
-      return ''
-  endif
-  let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-  let lines[0] = lines[0][column_start - 1:]
-  return lines
-endfunction
-
-
-function! ExecuteSingleLineInIEx()
-  let line = getline(".")
-  breakadd here
-  execute "IEx ". line
-  wincmd p
-endfunction
-
-function! ExecuteMultipleInIEx(statements)
-  lines = GetVisualSelection()
-  for line in lines
-    execute "IEx ". a:statement
-  endfor
-  wincmd p
-endfunction
-
-autocmd FileType elixir nnoremap <leader>e :call ExecuteSingleLineInIEx() <CR>
-autocmd FileType elixir xnoremap <leader>e :call ExecuteMultipleInIEx() <CR>
 
 " SPLITS
 " Create new splits more naturally
@@ -301,7 +268,19 @@ set smartcase
 set incsearch
 set hlsearch
 
-nnoremap \ :Ag<CR>
+
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%', '?'),
+  \   <bang>0)
+
+nnoremap \ :Rg<CR>
 
 " Recursive ctags search, so that tags can be accessed in sub-folders
 set tags=tags;/
@@ -413,12 +392,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Buffers & windows {{{
 " reuse window when changing buffers without saving
 set hidden
-
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Use proper airline fonts
 let g:airline_powerline_fonts = 1

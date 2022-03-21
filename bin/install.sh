@@ -9,7 +9,8 @@ sudo add-apt repository ppa:gnome-terminator
 sudo add-apt-repository ppa:gnome-terminator
 sudo apt-get update
 sudo apt-get install terminator
-sudo apt-get install vim-nox;
+sudo apt-get install vim-nox
+sudo apt-get install bat
 
 
 # install oh-my-zsh and set the shell
