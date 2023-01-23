@@ -1,14 +1,7 @@
-# Some settings for color
-if [ -e /usr/share/terminfo/x/xterm-256color ]; then
-        export TERM='xterm-256color'
-else
-        export TERM='xterm-color'
-fi
-GREP_OPTIONS='--color=auto'
 
-# Path
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export MANPATH=/opt/local/share/man:$MANPATH
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:/usr/local/share/dotnet"
+export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands"
 
-# Shortcuts and helpers
-alias lm="ls -la --block-size=M"
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

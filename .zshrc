@@ -1,14 +1,15 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/lana/.oh-my-zsh
+export ZSH=/Users/jannis/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
+#ZSH_THEME="agnoster"
 ZSH_THEME="bureau-jannis"
 
 # Uncomment the following line to use case-sensitive completion.
- CASE_SENSITIVE="true"
+CASE_SENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -45,11 +46,20 @@ ZSH_THEME="bureau-jannis"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-extras fasd z)
+plugins=(
+  git
+  git-extras
+  fasd
+  z
+  asdf
+  zsh-autosuggestions
+)
 
 # User configuration
 DEFAULT_USER="jannis"
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$PATH:/usr/local/share/dotnet"
+export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -79,23 +89,25 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Enable thefuck for correction of commands
-alias fuck='$(thefuck $(fc -ln -1))'
+# Set color of completions lower
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
-# shortcut to access the machines
-ssh_ai() {
-		ssh $1@ai$2.$1.quantifind.com
-}
-alias ai=ssh_ai
-alias todo=todotxt-machine
-
-export PATH=$PATH:/usr/local/go/bin
 export PATH=~/.local/bin:$PATH
-alias lm="ls -la --block-size=M"
-export TERM=xterm-color
+#export TERM=xterm-color
 
 #Save iex history across sessions
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
+source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+. "/Users/jannis/.acme.sh/acme.sh.env"
