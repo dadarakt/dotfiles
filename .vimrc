@@ -119,6 +119,9 @@ set nobackup
 " Automatically remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
+" Do not wait for escape sequences (removes waiting after 'O')
+:set noesckeys
+
 " Ale setup
 " Required, explicitly enable Elixir LS
 let g:ale_linters = {
@@ -127,6 +130,10 @@ let g:ale_linters = {
 
 " Required, tell ALE where to find Elixir LS
 let g:ale_elixir_elixir_ls_release = expand("~/src/elixir-ls/rel")
+
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au BufRead,BufNewFile *.eex,*.heex,*.leex,*.sface,*.lexs set filetype=eelixir
+au BufRead,BufNewFile mix.lock set filetype=elixir
 
 " Optional, configure as-you-type completions
 set completeopt=menu,menuone,preview,noselect,noinsert

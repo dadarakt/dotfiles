@@ -103,11 +103,12 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
-export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
-source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+#export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
+#source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+#source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
 export PATH="/usr/local/opt/ruby/bin:$PATH"
-. "/Users/jannis/.acme.sh/acme.sh.env"
+#. "/Users/jannis/.acme.sh/acme.sh.env"
+export PATH="/opt/homebrew/bin:$PATH"
