@@ -112,3 +112,7 @@ complete -o nospace -C /usr/local/bin/terraform terraform
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 #. "/Users/jannis/.acme.sh/acme.sh.env"
 export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/Users/jannis/Library/Python/3.11/bin:$PATH"
+
+test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
+export PATH="/opt/homebrew/opt/erlang@25/bin:$PATH"

@@ -61,13 +61,16 @@ Plugin 'mattn/emmet-vim'
 Plugin 'Valloric/MatchTagAlways'
 " C#
 Plugin 'OmniSharp/omnisharp-vim'
+" Arduino
+Plugin 'sudar/vim-arduino-syntax'
 
 call vundle#end()
 
-"}}}
-" OS level information {{{
 filetype plugin indent on
 filetype plugin on
+
+"}}}
+" OS level information {{{
 let s:OS = 'linux'
 let os = substitute(system('uname'), '\n', '', '')
 if os ==   'Darwin' || os == 'Mac'
@@ -131,6 +134,7 @@ let g:ale_linters = {
 " Required, tell ALE where to find Elixir LS
 let g:ale_elixir_elixir_ls_release = expand("~/src/elixir-ls/rel")
 
+
 au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
 au BufRead,BufNewFile *.eex,*.heex,*.leex,*.sface,*.lexs set filetype=eelixir
 au BufRead,BufNewFile mix.lock set filetype=elixir
@@ -140,6 +144,9 @@ set completeopt=menu,menuone,preview,noselect,noinsert
 let g:ale_completion_enabled = 1
 highlight ALEError ctermbg=none cterm=underline
 highlight ALEWarning ctermbg=none cterm=underline
+
+" Closetag Filetypes
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.html.heex'
 
 " }}}
 " Remaps {{{
@@ -439,6 +446,7 @@ let g:rehash256 = 1
 set background=dark
 "colorscheme jannis
 colorscheme gruvbox
+"colorscheme peachpuff
 "}}}
 
 " Fold down this file
