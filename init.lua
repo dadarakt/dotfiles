@@ -1,5 +1,10 @@
 -- bootstrap lazy.nvim plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+local vim = vim
+local Plug = vim.fn['plug#']
+
+-- Setup lazy package manager
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -11,6 +16,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
+
 
 require("lazy").setup({
 	{ "rebelot/kanagawa.nvim", name = "kanagawa" },
@@ -75,9 +81,12 @@ require("lazy").setup({
 	    	'nvim-telescope/telescope.nvim', tag = '0.1.8',
 	      	dependencies = { 'nvim-lua/plenary.nvim' }
 	},
-	{ 
-		"nvim-telescope/telescope-fzf-native.nvim", 
-		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release" 
+	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
+	},
+	{
+		"tpope/vim-fugitive"
 	},
 })
 
@@ -112,3 +121,8 @@ vim.cmd("nnoremap <leader>p \"+p")
 vim.cmd("nnoremap <leader>P \"+P")
 vim.cmd("vnoremap <leader>p \"+p")
 vim.cmd("vnoremap <leader>P \"+P")
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+    command = [[%s/\s\+$//e]],
+})

@@ -1,118 +1,454 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/jannis/.oh-my-zsh
+" Description: Vim configuration to my personal liking
+" Author: dadarakt
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-#ZSH_THEME="agnoster"
-ZSH_THEME="bureau-jannis"
+"{{{ Vundle
+" see :h vundle for questions with package managing
+" set the runtime path to include Vundle and initialize, also let vundle manage
+" itself
+filetype off                  " required
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" Well obviously, vundle itself needs to run
+Plugin 'gmarik/Vundle.vim'
 
-# Uncomment the following line to use case-sensitive completion.
-CASE_SENSITIVE="true"
+"""
+" GENERAL PLUGINS
+"""
+" Git support: git commands and git annotations next to line numbers
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+" Zoom for multiple windows (toggle with <c-w>o)
+Plugin 'regedarek/ZoomWin'
+" syntax checking on filesave with display
+Plugin 'scrooloose/syntastic.git'
+" asynchronous command execution
+Plugin 'Shougo/vimproc.vim'
+" Fuzzy search with global installation
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+"""
+" EDITOR LOOK AND FEEL
+"""
+" Status-bar
+Plugin 'bling/vim-airline'
+Plugin 'ryanoasis/vim-devicons'
+" Nerdtree
+Plugin 'scrooloose/nerdtree'
+" Commenting in/out lines/blocks
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'morhetz/gruvbox'
+" Close (X|HT)ML tags
+Plugin 'alvan/vim-closetag'
+" complete pairs of paranthesis
+Plugin 'tmsvg/pear-tree'
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+"""
+" PROGRAMMING LANGUAGE SUPPORT
+"""
+" ELIXIR
+Plugin 'elixir-editors/vim-elixir'
+Plugin 'dense-analysis/ale'
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+"Plugin 'slashmili/alchemist.vim'
+" Scala syntax highlighting
+Plugin 'derekwyatt/vim-scala'
+" RUST
+Plugin 'rust-lang/rust.vim'
+" JAVASCRIPT
+Plugin 'pangloss/vim-javascript'
+Plugin 'othree/javascript-libraries-syntax.vim'
+" HTML & CSS
+Plugin 'mattn/emmet-vim'
+Plugin 'Valloric/MatchTagAlways'
+" C#
+Plugin 'OmniSharp/omnisharp-vim'
+" Arduino
+Plugin 'sudar/vim-arduino-syntax'
 
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+call vundle#end()
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+filetype plugin indent on
+filetype plugin on
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+"}}}
+" OS level information {{{
+let s:OS = 'linux'
+let os = substitute(system('uname'), '\n', '', '')
+if os ==   'Darwin' || os == 'Mac'
+    let s:OS = 'osx'
+endif
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+let s:plugins = isdirectory(expand('~/.vim/bundle/vundle', 1))
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+" Some more folders needed
+if !isdirectory(expand('~/.vim/backup/', 1))
+    silent call mkdir(expand('~/.vim/backup', 1), 'p')
+endif
+if !isdirectory(expand('~/.vim/undo/', 1))
+    silent call mkdir(expand('~/.vim/undo', 1), 'p')
+endif
+if !isdirectory(expand('~/.vim/swap/', 1))
+    silent call mkdir(expand('~/.vim/swap', 1), 'p')
+endif
+"}}}
+" General settings {{{
+" sensible standards
+set nocompatible
+" More history plz
+set history=1000
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+set gdefault
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  git-extras
-  fasd
-  z
-  asdf
-  zsh-autosuggestions
-)
+" More reasonable pasting
+set pastetoggle=<F2>
 
-# User configuration
-DEFAULT_USER="jannis"
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PATH="$PATH:/usr/local/share/dotnet"
-export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands"
-# export MANPATH="/usr/local/man:$MANPATH"
+set mouse=a
 
-source $ZSH/oh-my-zsh.sh
+" Activate syntax highlighting
+syntax on
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+set autoread
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+set hid
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+set updatetime=750
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+set encoding=utf-8
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+" Remove swap files and backups
+set noswapfile
+set nowritebackup
+set nobackup
 
-# Set color of completions lower
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+" Automatically remove trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
 
-export PATH=~/.local/bin:$PATH
-#export TERM=xterm-color
+" Do not wait for escape sequences (removes waiting after 'O')
+:set noesckeys
 
-#Save iex history across sessions
-export ERL_AFLAGS="-kernel shell_history enabled"
+" Ale setup
+" Required, explicitly enable Elixir LS
+let g:ale_linters = { 'elixir': ['elixir-ls'] }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+" Required, tell ALE where to find Elixir LS
+let g:ale_elixir_elixir_ls_release = '/Users/jannis/src/elixir-ls/rel'
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au BufRead,BufNewFile *.eex,*.heex,*.leex,*.sface,*.lexs set filetype=eelixir
+au BufRead,BufNewFile mix.lock set filetype=elixir
 
-#export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
-#source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-#source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+" Optional, configure as-you-type completions
+set completeopt=menu,menuone,preview,noselect,noinsert
+let g:ale_completion_enabled = 1
+highlight ALEError ctermbg=none cterm=underline
+highlight ALEWarning ctermbg=none cterm=underline
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-#. "/Users/jannis/.acme.sh/acme.sh.env"
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/Users/jannis/Library/Python/3.11/bin:$PATH"
+" Closetag Filetypes
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.html.heex'
 
-test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
-export PATH="/opt/homebrew/opt/erlang@25/bin:$PATH"
+" }}}
+" Remaps {{{
+" remap leader key for easier access
+let mapleader = ','
+
+" Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy, which is the default
+map Y y$
+map C c$
+
+" Map <C-L> (redraw screen) to also turn off search highlighting until the next search
+nnoremap <C-L> :nohl<CR><C-L>
+
+" B E for end/beginning of line (equivalent to word boundaries)
+nnoremap B ^
+nnoremap E $
+
+" Highlights the latest insert
+nnoremap gV `[v`]
+
+nnoremap <leader>t :Files<CR>
+"nnoremap <leader>a :Ag
+nnoremap <leader>f :Ag<CR>
+
+" System clipboard yanking
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+
+" So that explore is the default on :E (among other alternatives)
+cabbrev E Explore
+" type ',s' to save the buffers etc. Reopen where you were with Vim with 'vim -S'
+nnoremap <leader>s :mksession<CR>
+
+nnoremap  <C-J>       <C-O>
+nnoremap  <C-K>       <C-I>
+nnoremap  <C-B>       :ALEGoToDefinition <CR>
+nnoremap  K           :ALEHover <CR>
+nnoremap  <Leader>b   :ALEFindReferences <CR>
+
+inoremap  <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:airline#extensions#ale#enabled = 1
+let g:ale_hover_to_preview = 1
+
+" Helpers for terminal mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-s> <C-\><C-n><C-w>h
+tnoremap <C-d> <C-\><C-n><C-w>j
+tnoremap <C-e> <C-\><C-n><C-w>k
+tnoremap <C-f> <C-\><C-n><C-w>l
+
+" Move between splits with control
+map <C-s> <C-w>h
+map <C-d> <C-w>j
+map <C-e> <C-w>k
+map <C-f> <C-w>l
+
+" SPLITS
+" Create new splits more naturally
+set splitbelow
+set splitright
+set fillchars+=vert:▏
+
+" Only redraw the editor when needed
+set lazyredraw
+
+" For better command-line completion
+set wildmenu
+
+" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
+autocmd VimEnter * silent exec "! echo -ne '\e[1 q'"
+autocmd VimLeave * silent exec "! echo -ne '\e[5 q'"
+
+"}}}
+" File Operations {{{
+" Also allow for undos over persistet files
+if has('persistent_undo')
+    set undodir=~/.vim/undo//
+    set undofile
+    set undolevels=1000
+    set undoreload=10000
+endif
+
+" Use backups
+" Source: http://stackoverflow.com/a/15317146
+set backup
+set writebackup
+set backupdir=~/.vim/backup//
+
+" Use a specified swap folder
+" Source: http://stackoverflow.com/a/15317146
+set directory=~/.vim/swap//
+
+" Automatically reread the file on change
+set autoread
+
+" Rust autoformat
+let g:rustfmt_autosave = 1
+
+" }}}
+" Tabs and Spacing {{{
+
+" Backspacing over indent, linebreaks and inserts
+set backspace=indent,eol,start
+
+" Make tabs nicer
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
+set expandtab
+set smarttab
+set joinspaces
+
+set autoindent
+
+" When indenting lines visually using < or > keep visual mode afterwards
+vnoremap > >gv
+vnoremap < <gv
+
+" Shifting operations using tab
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+" }}}
+" Search {{{
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+map <space> /
+map <c-space> ?
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%', '?'),
+  \   <bang>0)
+
+nnoremap \ :Rg<CR>
+
+" Recursive ctags search, so that tags can be accessed in sub-folders
+set tags=tags;/
+
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+
+" Keybindings for FZF
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" }}}
+" GUI Settings {{{
+" line numbers
+set nu
+
+" No welcome message
+set shortmess=I
+
+" Using statusbar makes this obsolete
+set noshowmode
+
+" Disable all sorts of alarms
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
+" Always show the status-line
+set laststatus=1
+
+" Have a colored line as a ruler
+ let &colorcolumn="100"
+" Highlighting text of lines longer than 100 chars
+" match ErrorMsg '\%>100v.\+'
+"augroup vimrc_autocmds
+  "autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#111111
+  "autocmd BufEnter * match OverLength /\%80v.*/
+"augroup END
+
+" Briefly shows the matching bracket while inserting
+set sm
+
+" When the page starts to scroll, keep the cursor 8 lines from the top and 8 lines from the bottom
+set scrolloff=8
+
+" Show command in bottom bar
+set showcmd
+
+" Highlight current line
+set cursorline
+
+" Indentation lines
+let g:indentLine_char = '▏'
+
+" Only redraw the editor when needed
+"set lazyredraw
+
+" For better command-line completion
+set wildmenu
+
+" Don't wrap lines
+set wrap
+set textwidth=0
+set wrapmargin=0
+set nofoldenable
+
+" }}}
+" File Operations {{{
+" Also allow for undos over persistet files
+if has('persistent_undo')
+    set undodir=~/.vim/undo//
+    set undofile
+    set undolevels=1000
+    set undoreload=10000
+endif
+
+" Use backups http://stackoverflow.com/a/15317146
+set backup
+set writebackup
+set backupdir=~/.vim/backup//
+
+" Use a specified swap folder http://stackoverflow.com/a/15317146
+set directory=~/.vim/swap//
+
+" Automatically reread the file on change
+set autoread
+
+" }}}
+" NerdTree {{{
+" Delete buffer of file, when deleting file in tree
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+let g:NERDTreeShowHidden=1
+
+" Easier nerd-tree toggle
+map <C-n> :NERDTreeToggle<CR>
+" Open current buffer in nerd-tree
+map <leader>r :NERDTreeFind<cr>
+" Close vim if the only open buffer is the nerdtree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" }}}
+
+" Buffers & windows {{{
+" reuse window when changing buffers without saving
+set hidden
+
+" Use proper airline fonts
+let g:airline_powerline_fonts = 1
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+ "This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+" }}}
+"{{{ Language Options
+" GIT
+" Remove gitgutter keymappings, as they conflict with buffer naviation <leader>h
+" and I don't use them right now
+let g:gitgutter_map_keys = 0
+
+" HTML
+autocmd FileType html setlocal ts=4 sts=4 sw=4
+
+" C#
+autocmd FileType cs setlocal ts=4 sts=4 sw=4
+
+" Elixir settings
+" Uncomment to enable formatting on write for elixir
+"autocmd BufWritePost *.exs,*.ex call MixFormat()
+function MixFormat()
+  silent :!mix format %
+  :e!
+endfunction
+"}}}
+" Colors {{{
+set t_Co=256
+let g:rehash256 = 1
+set background=dark
+"colorscheme jannis
+colorscheme gruvbox
+"colorscheme peachpuff
+"}}}
+
+" Fold down this file
+set modelines=1
+"vim:foldmethod=marker:foldlevel=0
+
